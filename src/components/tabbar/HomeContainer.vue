@@ -1,17 +1,32 @@
 <template>
     <div>
         <!-- 这是轮播图区域 -->
+        <!-- 在组件中 使用v-for循环的话 一定要使用key -->
+        <!-- 渲染版 -->
+        <!--
         <mt-swipe :auto="4000">
-            <!-- 在组件中 使用v-for循环的话 一定要使用key -->
             <mt-swipe-item v-for="item in lunbotuList" :key="item.url">
                 <img src="item.img" alt="">
             </mt-swipe-item>
         </mt-swipe>
+        -->
+        <!-- 没渲染版 -->
+        <mt-swipe :auto="4000">
+            <mt-swipe-item>
+                <img src="../../images/mi1.jpg" alt="">
+            </mt-swipe-item>
+            <mt-swipe-item>
+                <img src="../../images/mi2.jpg" alt="">
+            </mt-swipe-item>
+            <mt-swipe-item>
+                <img src="../../images/mi3.jpg" alt="">
+            </mt-swipe-item>
+        </mt-swipe>
         <!-- 九宫格到六宫格的改造工程 -->
         <ul class="mui-table-view mui-grid-view mui-grid-9">
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/newslist">
                     <img src="../../images/news.png" alt="">
-                    <div class="mui-media-body">新闻资讯</div></a></li>
+                    <div class="mui-media-body">新闻资讯</div></router-link></li>
             <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
                     <img src="../../images/picShare.png" alt="">
                     <div class="mui-media-body">图片分享</div></a></li>
@@ -48,7 +63,8 @@ export default {
   methods: {
     getLunbotu() {
       //获取轮播图数据的方法
-      this.$http.get("http://vue.studyit/api/getlunbo").then(result => {
+      /*
+      this.$http.get("api/getlunbo").then(result => {
         //console.log(result.body);
         if (result.body.status === 0) {
           //成功了
@@ -57,7 +73,9 @@ export default {
           //失败的
           Toast("加载轮播图失败");
         }
+
       });
+      */
     }
   }
 };

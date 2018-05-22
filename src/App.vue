@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <!-- 顶部 Header 区域 -->
-        <mt-header fixed title="凉城腌面店"></mt-header>
+        <mt-header fixed title="科技之家"></mt-header>
 
         <!-- 中间路由router-view 区域 -->
 		<transition>
@@ -37,6 +37,7 @@
 <style lang="scss" scoped>
 .app-container {
   padding-top: 40px;
+  padding-bottom: 50px;
   overflow-x: hidden;
 }
 
