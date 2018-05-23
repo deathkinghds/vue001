@@ -75,10 +75,10 @@ export default {
 .newsinfo-container {
     padding: 0 4px;
     .title {
-        font-size: 16px;
+        font-size: 18px;
         text-align: center;
         margin: 15px 0;
-        color: red;
+        color: #333;
     }
     .subtitle {
         font-size: 13px;

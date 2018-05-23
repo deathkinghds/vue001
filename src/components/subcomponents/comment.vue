@@ -2,11 +2,18 @@
     <div class="cmt-container">
         <h3>发表评论</h3>
         <hr>
+        <!-- 渲染版 -->
+        <!--
+        <textarea placeholder="请输入要BB的内容（最多吐槽120字）" maxlength="120" v-model="msg"></textarea>
+        -->
+
+        <!-- 非渲染版 -->
         <textarea placeholder="请输入要BB的内容（最多吐槽120字）" maxlength="120"></textarea>
+
 
         <!-- 渲染版 -->
         <!--
-        <mt-button type="primary" size="large">发表评论</mt-button>
+        <mt-button type="primary" size="large" @click="postComment">发表评论</mt-button>
         <div class="cmt-list">
             <div class="cmt-item" v-for="(item, i) in comments" :key="item.add_time">
                 <div class="cmt-title">
@@ -18,6 +25,7 @@
             </div>
         </div>
         -->
+
         <!-- 非渲染版 -->
         <mt-button type="primary" size="large">发表评论</mt-button>
         <div class="cmt-list">
@@ -38,25 +46,27 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui"
+import { Toast } from "mint-ui";
 
 export default {
-    data (){
-        return {
-            //默认展示第一页数据
-            pageIndex : 1,
-            //所有评论的数据
-            comments : []
-        };
-    },
-    created () {
-        //调用获取评论的方法
-        this.getComments();
-    },
-    methods : {
-        //获取评论
-        getComments () {
-            /*
+  data() {
+    return {
+      //默认展示第一页数据
+      pageIndex: 1,
+      //所有评论的数据
+      comments: [],
+      //评论输入的内容
+      msg: ""
+    };
+  },
+  created() {
+    //调用获取评论的方法
+    this.getComments();
+  },
+  methods: {
+    //获取评论
+    getComments() {
+      /*
             this.$http.get("api/getcomments/" + this.id + "?pageindex=" + this.pageIndex).then(result => {
                 if(result.body.status === 0) {
                     // this.comments = result.body.message;
@@ -67,42 +77,67 @@ export default {
                 }
             })
             */
-        },
-        //加载更多
-        getMore () {
-            this.pageIndex++;
-            this.getComments();
-        }
     },
-    props: ['id']
-}
+    //加载更多
+    getMore() {
+      this.pageIndex++;
+      this.getComments();
+    },
+    postComment() {
+      //校验是否为空内容
+      if (this.msg.trim().length === 0) {
+        return Toast("评论内容不能为空");
+      }
+      //发表评论
+      //参数1：请求的URL地址
+      //参数2：提交给服务器的数据对象 { content: this.msg }
+      this.$http
+        .post("api/postcomment/" + this.$route.params.id, {
+          content: this.msg.trim()
+        })
+        .then(function(result) {
+          if (result.body.status === 0) {
+            //1.拼接出一个评论对象
+            var cmt = {
+              user_name: "匿名用户",
+              add_time: Date.now(),
+              content: this.msg.trim()
+            };
+            this.comments.unshift(cmt);
+            this.msg = "";
+          }
+        });
+    }
+  },
+  props: ["id"]
+};
 </script>
 
 <style lang="scss">
 .cmt-container {
-    h3 {
-        font-size: 18px;
-    }
-    textarea {
-        font-size: 14px;
-        height: 85px;
-        margin: 0;
-    }
+  h3 {
+    font-size: 18px;
+  }
+  textarea {
+    font-size: 14px;
+    height: 85px;
+    margin: 0;
+  }
 
-    .cmt-list {
-        margin: 5px 0;
-        .cmt-item {
-            font-size: 13px;
-            .cmt-title {
-                line-height: 30px;
-                background-color: #ccc;
-            }
-            .cmt-body {
-                line-height: 35px;
-                text-indent: 2em;
-            }
-        }
+  .cmt-list {
+    margin: 5px 0;
+    .cmt-item {
+      font-size: 13px;
+      .cmt-title {
+        line-height: 30px;
+        background-color: #ccc;
+      }
+      .cmt-body {
+        line-height: 35px;
+        text-indent: 2em;
+      }
     }
+  }
 }
 </style>
 
